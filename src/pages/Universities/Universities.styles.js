@@ -2,32 +2,21 @@ import styled from 'styled-components';
 
 export const Header = styled.div`
   display: flex;
+  justify-content: space-around;
 `;
 
-export const AddPostButtonContainer = styled.div`
-flex: 1;
-`;
-
-export const AddPostButton = styled.button`
-  background-color: #04AA6D;
-  border: 1px solid;
-  border-radius: 5px;
-  color: white;
-  padding: 10px 15px;
-  text-align: center;
-  text-decoration: none;
-  display: inline-block;
-  font-size: 20px;
-  cursor: pointer;
-  width: 50%;
-`;
+export const Title = styled.div`
+  font-size: 24px;
+  width: 100px;
+  float: left;
+  flex: 1;
+  `;
 
 export const SearchBarContainer = styled.div`
   float: right;
 `;
 
 export const SearchFormContainer = styled.div`
-  float: right;
   float: right;
   padding: 6px 10px;
   margin-top: 8px;
@@ -58,6 +47,7 @@ export const SearchButton = styled.button`
   &:hover {background-color: #ccc;}
 `;
 
+
 export const Table = styled.table`
   padding: 12px 0;
   text-align: left
@@ -78,6 +68,7 @@ export const TableRow = styled.tr`
   &:nth-child(even){background-color: #f2f2f2;}
   &:hover {background-color: #ddd;}
 `;
+
 export const TableHeader = styled.th`
   padding: 12px 0;
   text-align: left;
@@ -93,29 +84,3 @@ export const TableDetail = styled.td`
   color: black;
   font-size: 14px;
 `;
-
-export const EditButton = styled.button`
-  background-color: blue;
-  border: 1px solid;
-  border-radius: 5px;
-  color: white;
-  padding: 10px 15px;
-  text-align: center;
-  text-decoration: none;
-  display: inline-block;
-  font-size: 14px;
-  cursor: pointer;
-`;
-export const DeleteButton = styled.button`
-  background-color: red;
-  border: 1px solid;
-  border-radius: 5px;
-  color: white;
-  padding: 10px 15px;
-  text-align: center;
-  text-decoration: none;
-  display: inline-block;
-  font-size: 14px;
-  cursor: pointer;
-`;
-

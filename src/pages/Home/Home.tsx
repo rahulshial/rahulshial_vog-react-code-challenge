@@ -11,13 +11,12 @@ const Home = () => {
         <Styled.AddPostButton onClick={() => console.log('Add Posts Clicked...')}>Add Posts</Styled.AddPostButton>
         </Styled.AddPostButtonContainer>
         <Styled.SearchBarContainer>
-
-        <Styled.SearchFormContainer>
-          <form>
-            <Styled.Input placeholder="Search.." name="search"></Styled.Input>
-            <Styled.SearchButton type="submit"><i className="fa fa-search"></i></Styled.SearchButton>
-          </form>
-        </Styled.SearchFormContainer>
+          <Styled.SearchFormContainer>
+            <form>
+              <Styled.Input placeholder="Search.." name="search"></Styled.Input>
+              <Styled.SearchButton type="submit"><i className="fa fa-search"></i></Styled.SearchButton>
+            </form>
+          </Styled.SearchFormContainer>
         </Styled.SearchBarContainer>
       </Styled.Header>
       <Styled.Table>
