@@ -11,7 +11,7 @@ const initialState: PostsState = [{
 }]
 
 export const postsSlice = createSlice({
-  name: 'post',
+  name: 'posts',
   initialState,
   reducers: {
     setPostList: (state, action: PayloadAction<PostsState>) => {
@@ -21,9 +21,9 @@ export const postsSlice = createSlice({
       return { ...state, ...action.payload }
     },
     deletePost: (state, {payload: id}: PayloadAction<number | null>) => {
-      console.log(state)
       //@ts-ignore
-      return state.posts.filter(item => item.id === id)
+      console.log(state.posts)
+      return {...state}
     }
   },
 })
