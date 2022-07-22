@@ -2,6 +2,8 @@ import styled from 'styled-components';
 
 export const Header = styled.div`
   display: flex;
+  text-align: justify;
+  align-items: center;
 `;
 
 export const AddPostButtonContainer = styled.div`
@@ -19,7 +21,7 @@ export const AddPostButton = styled.button`
   display: inline-block;
   font-size: 20px;
   cursor: pointer;
-  width: 50%;
+  width: 30%;
 `;
 
 export const SearchBarContainer = styled.div`
@@ -95,10 +97,10 @@ export const TableDetail = styled.td`
 `;
 
 export const EditButton = styled.button`
-  background-color: blue;
+  background-color: white;
   border: 1px solid;
   border-radius: 5px;
-  color: white;
+  color: #04AA6D;
   padding: 10px 15px;
   text-align: center;
   text-decoration: none;
@@ -107,10 +109,10 @@ export const EditButton = styled.button`
   cursor: pointer;
 `;
 export const DeleteButton = styled.button`
-  background-color: red;
+  background-color: white;
   border: 1px solid;
   border-radius: 5px;
-  color: white;
+  color: red;
   padding: 10px 15px;
   text-align: center;
   text-decoration: none;

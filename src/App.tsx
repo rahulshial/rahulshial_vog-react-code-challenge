@@ -1,7 +1,6 @@
 /* eslint-disable @typescript-eslint/no-unused-vars */
 import React from 'react';
 import { Route, Routes } from "react-router-dom"
-import { Counter } from './features/counter/Counter';
 import Navbar from './components/Navbar';
 import Home from './pages/Home/Home';
 import Universities from './pages/Universities/Universities';
