@@ -1,30 +1,23 @@
 /* eslint-disable @typescript-eslint/no-unused-vars */
 import React, { useEffect, useState } from 'react'
-// import { posts } from './data';
 import { useAppDispatch, useAppSelector } from '../../redux/hooks';
 import { useGetPostsQuery } from '../../redux/api/posts.api';
 import { PostEntity } from '../../redux/reducers/Posts.type';
 import * as Styled from './Home.styles';
+import { setPostList, deletePost } from '../../redux/reducers/posts.reducer';
 
 const Home = () => {
+  const dispatch = useAppDispatch();
   const {data, isError, isLoading} = useGetPostsQuery()
   const [rows, setRows] = useState<PostEntity[]>([]);
   
   useEffect(() => {
     if(data){
       setRows(data)
-      setRows(() => (
-        data.map((postItem: PostEntity) => {
-          return {
-            userId: postItem.userId,
-            id: postItem.id,
-            title: postItem.title,
-            body: postItem.body,
-          }
-        })
-      ))
+      dispatch(setPostList(data))
     }
-  }, [data]);
+  }, [data, dispatch]);
+
   
   return (
     <>
@@ -61,10 +54,10 @@ const Home = () => {
                       <Styled.TableDetail>{post.title}</Styled.TableDetail>
                       <Styled.TableDetail>{post.body}</Styled.TableDetail>
                       <Styled.TableDetail>
-                        <Styled.EditButton>Edit</Styled.EditButton>
+                        <Styled.EditButton onClick={() => {console.log(post.id)}}>Edit</Styled.EditButton>
                       </Styled.TableDetail>
                       <Styled.TableDetail>
-                        <Styled.DeleteButton>Delete</Styled.DeleteButton>
+                        <Styled.DeleteButton onClick={() => dispatch(deletePost(post.id))}>Delete</Styled.DeleteButton>
                       </Styled.TableDetail>
                     </Styled.TableRow>
                   </>
