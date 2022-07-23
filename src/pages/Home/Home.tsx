@@ -1,14 +1,16 @@
 /* eslint-disable @typescript-eslint/no-unused-vars */
 import React, { useEffect, useState } from 'react'
 import { useAppDispatch, useAppSelector } from '../../redux/hooks';
-import { useGetPostsQuery } from '../../redux/api/posts.api';
+import { useGetAllPostsQuery, useGetPostByIdQuery } from '../../redux/api/posts.api';
 import { PostEntity } from '../../redux/reducers/Posts.type';
 import * as Styled from './Home.styles';
-import { setPostList, deletePost } from '../../redux/reducers/posts.reducer';
+import { setPostList, deletePost, updatePost } from '../../redux/reducers/posts.reducer';
 
 const Home = () => {
   const dispatch = useAppDispatch();
-  const {data, isError, isLoading} = useGetPostsQuery()
+  const [searchId, setSearchId] = useState(0);
+  const {data, isError, isLoading} = useGetAllPostsQuery();
+  const {data: postData} = useGetPostByIdQuery(searchId);
   const [rows, setRows] = useState<PostEntity[]>([]);
   
   useEffect(() => {
@@ -18,11 +20,22 @@ const Home = () => {
     }
   }, [data, dispatch]);
 
+  useEffect(() => {
+    if(postData) {
+      setRows([postData]);
+      dispatch(updatePost(postData));
+    }
+  }, [dispatch, postData])
   
+
+  const handleSearchIdChange = (event: any) => {
+    console.log(event.target.value);
+    setSearchId(event.target.value);
+  };
+
   return (
     <>
     {rows.length && (
-
       <><Styled.Header>
           <Styled.AddPostButtonContainer>
             <Styled.AddPostButton onClick={() => console.log('Add Posts Clicked...')}>Add Posts</Styled.AddPostButton>
@@ -30,8 +43,17 @@ const Home = () => {
           <Styled.SearchBarContainer>
             <Styled.SearchFormContainer>
               <form>
-                <Styled.Input placeholder="Search.." name="search"></Styled.Input>
-                <Styled.SearchButton type="submit"><i className="fa fa-search"></i></Styled.SearchButton>
+                <Styled.Input
+                  type="number"
+                  placeholder="Search.."
+                  name="searchId"
+                  value={searchId}
+                  onChange={handleSearchIdChange}
+                  >
+                </Styled.Input>
+                <Styled.SearchButton
+                  type="submit"><i className="fa fa-search"></i>
+                </Styled.SearchButton>
               </form>
             </Styled.SearchFormContainer>
           </Styled.SearchBarContainer>
@@ -66,8 +88,6 @@ const Home = () => {
             </Styled.TableBody>
           </Styled.Table></>
     )}
-      
-
     </>
   )
 }

@@ -4,3 +4,5 @@ export interface PostEntity {
   title: string | null;
   body: string | null;
 };
+
+// export type Post = PostEntity;
