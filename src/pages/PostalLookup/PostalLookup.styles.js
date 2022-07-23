@@ -2,27 +2,17 @@ import styled from 'styled-components';
 
 export const Header = styled.div`
   display: flex;
+  align-items: center;
 `;
 
-export const AddPostButtonContainer = styled.div`
-flex: 1;
-`;
-
-export const AddPostButton = styled.button`
-  background-color: #04AA6D;
-  border: 1px solid;
-  border-radius: 5px;
-  color: white;
-  padding: 10px 15px;
-  text-align: center;
-  text-decoration: none;
-  display: inline-block;
-  font-size: 20px;
-  cursor: pointer;
-  width: 50%;
+export const Title = styled.div`
+  flex: .5;
+  font-size: 24px;
+  text-align: justify;
 `;
 
 export const SearchBarContainer = styled.div`
+  flex: .5;
   float: right;
 `;
 
@@ -64,6 +54,7 @@ export const DataContainer = styled.div`
   padding: 30px;
   width: 50%;
   border: 1px solid;
+  text-align: justify;
 `;
 
 export const PostalCode = styled.h6`
