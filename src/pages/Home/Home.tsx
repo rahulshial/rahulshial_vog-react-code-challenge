@@ -5,19 +5,21 @@ import {
   useGetAllPostsQuery, 
   useGetPostByIdQuery, 
   useCreatePostMutation } from '../../redux/api/posts.api';
+  import { setPostList, deletePost, updatePost } from '../../redux/reducers/posts.reducer';
 import { PostEntity } from '../../redux/reducers/Posts.type';
+import Modal from './Modal';
 import * as Styled from './Home.styles';
-import { setPostList, deletePost, updatePost } from '../../redux/reducers/posts.reducer';
+import { useDispatch } from 'react-redux';
 
 const Home = () => {
-  const dispatch = useAppDispatch();
+  const dispatch = useDispatch();
   const [searchId, setSearchId] = useState(0);
   const [openModal, setOpenModal] = useState(false);
   const [newPost, setNewPost] = useState({
     title: '',
     body: '',
   })
-
+  const postsData = useAppSelector(state => state.posts);
   const {data, isError, isLoading} = useGetAllPostsQuery();
   const {data: postData} = useGetPostByIdQuery(searchId);
   const [createPostMutation, {data: addedPost, isSuccess, isError: postError}] = useCreatePostMutation()
@@ -122,7 +124,7 @@ const Home = () => {
         </Styled.PostButtonContainer>
       </Styled.Modal>
     )}
-    {rows.length && (
+    {postsData.length && (
       <><Styled.Header>
           <Styled.AddPostButtonContainer>
             <Styled.AddPostButton onClick={handleToggleModal}>Add Posts</Styled.AddPostButton>
@@ -155,9 +157,8 @@ const Home = () => {
               </Styled.TableRow>
             </Styled.TableHead>
             <Styled.TableBody>
-              {rows.map((post) => {
+              {postsData.map((post) => {
                 return (
-                  <>
                     <Styled.TableRow key={post.id}>
                       <Styled.TableDetail>{post.id}</Styled.TableDetail>
                       <Styled.TableDetail>{post.title}</Styled.TableDetail>
@@ -169,8 +170,7 @@ const Home = () => {
                         <Styled.DeleteButton onClick={() => dispatch(deletePost(post.id))}>Delete</Styled.DeleteButton>
                       </Styled.TableDetail>
                     </Styled.TableRow>
-                  </>
-                );
+                )
               })}
             </Styled.TableBody>
           </Styled.Table></>

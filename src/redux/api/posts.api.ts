@@ -16,7 +16,7 @@ export const postsApi = createApi({
       query: (id) => `https://jsonplaceholder.typicode.com/posts/${id}`
     }),
     createPost: builder.mutation<PostEntity, {}>({
-      query: (postBody: {}) => ({
+      query: (postBody) => ({
         url: 'https://jsonplaceholder.typicode/posts',
         method: 'POST',
         body: postBody,
