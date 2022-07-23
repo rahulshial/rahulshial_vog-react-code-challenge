@@ -10,8 +10,7 @@ import {
     setPostList,
     deletePost,
     updatePost,
-    createPost } from '../../redux/reducers/posts.reducer';
-import { PostEntity } from '../../redux/reducers/Posts.type';
+    createPost, setPostListById } from '../../redux/reducers/posts.reducer';
 import Modal from './Modal';
 import * as Styled from './Home.styles';
 
@@ -23,25 +22,21 @@ const Home = () => {
     title: '',
     body: '',
   })
-  const [deletedPostId, setDeletedPostId] = useState<number>(0);
-  const [rows, setRows] = useState<PostEntity[]>([]);
   const postsData = useAppSelector(state => state.posts);
   const {data, isError, isLoading} = useGetAllPostsQuery();
-  const {data: postData} = useGetPostByIdQuery(searchId);
-  const [createPostMutation, {data: addedPost, isSuccess: addSuccess, isError: addError}] = useCreatePostMutation();
+  const {data: postData, isSuccess} = useGetPostByIdQuery(searchId);
+  const [createPostMutation] = useCreatePostMutation();
   const [deletePostMutationById] = useDeletePostByIdMutation();
 
   useEffect(() => {
     if(data){
-      setRows(data)
       dispatch(setPostList(data))
     }
   }, [data, dispatch]);
 
   useEffect(() => {
     if(postData && searchId > 0) {
-      setRows([postData]);
-      dispatch(updatePost(postData));
+      dispatch(setPostListById([postData]));
     }
   }, [dispatch, postData, searchId])
   
@@ -70,9 +65,8 @@ const Home = () => {
     });
     createPostMutation(postBody)
     .unwrap()
-    .then((res) => {
-      const newPostBody = {...res}
-      dispatch(createPost(newPostBody))
+    .then((res: any) => {
+      dispatch(createPost(res))
     })
   };
 
@@ -85,7 +79,6 @@ const Home = () => {
   };
 
   const handleDeletePost = (id: number) => {
-    setDeletedPostId(id)
     deletePostMutationById(id)
     .unwrap()
     .then((res) => {
