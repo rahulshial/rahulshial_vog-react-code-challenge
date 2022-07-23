@@ -13,6 +13,10 @@ export const postsSlice = createSlice({
       state = [...state, ...action.payload]
       return state
     },
+    createPost: (state, action: PayloadAction<PostEntity>) => {
+      state = [...state, action.payload]
+      return state
+    },
     updatePost: (state, action: PayloadAction<PostEntity>) => {
       // state = [...state, ...action.payload]
       // return { ...state, ...action.payload }
@@ -27,6 +31,7 @@ export const postsSlice = createSlice({
 
 export const {
   setPostList,
+  createPost,
   updatePost,
   deletePost,
 } = postsSlice.actions;

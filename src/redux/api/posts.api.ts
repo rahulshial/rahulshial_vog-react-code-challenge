@@ -6,34 +6,33 @@ export const postsApi = createApi({
   refetchOnMountOrArgChange: true,
   keepUnusedDataFor: 0,
   baseQuery: fetchBaseQuery({
-    baseUrl: '/',
+    baseUrl: 'https://jsonplaceholder.typicode.com/posts',
   }),
   endpoints: (builder) => ({
     getAllPosts: builder.query<PostEntity[], void>({
-      query: () => 'https://jsonplaceholder.typicode.com/posts'
+      query: () => ''
     }),
     getPostById: builder.query<PostEntity, number>({
-      query: (id) => `https://jsonplaceholder.typicode.com/posts/${id}`
+      query: (id) => `/${id}`
     }),
     createPost: builder.mutation<PostEntity, {}>({
       query: (postBody) => ({
-        url: 'https://jsonplaceholder.typicode/posts',
+        url: '',
         method: 'POST',
         body: postBody,
       }),
     }),
     updatePostById: builder.mutation<PostEntity, PostEntity>({
       query: (postBody) => ({
-        url: `https://jsonplaceholder.typicode/posts/${postBody.id}`,
+        url: `/${postBody.id}`,
         method: 'PUT',
         body: postBody,
       }),
     }),
     deletePostById: builder.mutation<PostEntity, number>({
       query: (id: number) => ({
-        url: `https://jsonplaceholder.typicode/posts/${id}`,
-        method: 'POST',
-        body: id,
+        url: `/${id}`,
+        method: 'DELETE',
       }),
     }),
   })

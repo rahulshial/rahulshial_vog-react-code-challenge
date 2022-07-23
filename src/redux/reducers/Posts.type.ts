@@ -1,8 +1,8 @@
 export interface PostEntity {
-  userId: number | null;
-  id: number | null;
-  title: string | null;
-  body: string | null;
+  userId: number;
+  id: number;
+  title: string;
+  body: string;
 };
 
 // export type Post = PostEntity;

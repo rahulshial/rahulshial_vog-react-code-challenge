@@ -4,26 +4,32 @@ import { useAppDispatch, useAppSelector } from '../../redux/hooks';
 import { 
   useGetAllPostsQuery, 
   useGetPostByIdQuery, 
-  useCreatePostMutation } from '../../redux/api/posts.api';
-  import { setPostList, deletePost, updatePost } from '../../redux/reducers/posts.reducer';
+  useCreatePostMutation,
+  useDeletePostByIdMutation } from '../../redux/api/posts.api';
+  import { 
+    setPostList,
+    deletePost,
+    updatePost,
+    createPost } from '../../redux/reducers/posts.reducer';
 import { PostEntity } from '../../redux/reducers/Posts.type';
 import Modal from './Modal';
 import * as Styled from './Home.styles';
-import { useDispatch } from 'react-redux';
 
 const Home = () => {
-  const dispatch = useDispatch();
+  const dispatch = useAppDispatch();
   const [searchId, setSearchId] = useState(0);
   const [openModal, setOpenModal] = useState(false);
   const [newPost, setNewPost] = useState({
     title: '',
     body: '',
   })
+  const [deletedPostId, setDeletedPostId] = useState<number>(0);
+  const [rows, setRows] = useState<PostEntity[]>([]);
   const postsData = useAppSelector(state => state.posts);
   const {data, isError, isLoading} = useGetAllPostsQuery();
   const {data: postData} = useGetPostByIdQuery(searchId);
-  const [createPostMutation, {data: addedPost, isSuccess, isError: postError}] = useCreatePostMutation()
-  const [rows, setRows] = useState<PostEntity[]>([]);
+  const [createPostMutation, {data: addedPost, isSuccess: addSuccess, isError: addError}] = useCreatePostMutation();
+  const [deletePostMutationById] = useDeletePostByIdMutation();
 
   useEffect(() => {
     if(data){
@@ -53,17 +59,21 @@ const Home = () => {
 
   const handleCreatePost = () => {
     setOpenModal(false)
-    const postBody = {body: {
+    const postBody = {
       title: newPost.title,
       body: newPost.body,
       userId: 123,
-    }}
+    }
     setNewPost({
       title: '',
       body: '',
     });
-    createPostMutation(postBody);
-    console.log(postBody)
+    createPostMutation(postBody)
+    .unwrap()
+    .then((res) => {
+      const newPostBody = {...res}
+      dispatch(createPost(newPostBody))
+    })
   };
 
   const handleCancelPost = () => {
@@ -74,6 +84,14 @@ const Home = () => {
     });
   };
 
+  const handleDeletePost = (id: number) => {
+    setDeletedPostId(id)
+    deletePostMutationById(id)
+    .unwrap()
+    .then((res) => {
+      dispatch(deletePost(id))})
+  };
+  
   return (
     <>
     {openModal && (
@@ -167,7 +185,7 @@ const Home = () => {
                         <Styled.EditButton onClick={() => {console.log(post.id)}}>Edit</Styled.EditButton>
                       </Styled.TableDetail>
                       <Styled.TableDetail>
-                        <Styled.DeleteButton onClick={() => dispatch(deletePost(post.id))}>Delete</Styled.DeleteButton>
+                        <Styled.DeleteButton onClick={() => handleDeletePost(post.id)}>Delete</Styled.DeleteButton>
                       </Styled.TableDetail>
                     </Styled.TableRow>
                 )
