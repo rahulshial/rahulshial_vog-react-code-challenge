@@ -1,4 +1,3 @@
-/* eslint-disable @typescript-eslint/no-unused-vars */
 import React, { useEffect, useState } from 'react'
 import { useAppDispatch, useAppSelector } from '../../redux/hooks';
 import { 
@@ -20,13 +19,18 @@ const Home = () => {
   const dispatch = useAppDispatch();
   const [searchId, setSearchId] = useState(0);
   const [openAddModal, setOpenAddModal] = useState(false);
+  const [openEditModal, setOpenEditModal] = useState(false);
   const [newPost, setNewPost] = useState({
     title: '',
     body: '',
   })
+  const [localPostId, setLocalPostId] = useState({
+    id: 0,
+    userId: 0,
+  })
   const postsData = useAppSelector(state => state.posts);
-  const {data, isError, isLoading} = useGetAllPostsQuery();
-  const {data: postData, isSuccess} = useGetPostByIdQuery(searchId);
+  const {data} = useGetAllPostsQuery();
+  const {data: postData} = useGetPostByIdQuery(searchId);
   const [createPostMutation] = useCreatePostMutation();
   const [deletePostMutationById] = useDeletePostByIdMutation();
   const [updatePostMutationById] = useUpdatePostByIdMutation();
@@ -45,6 +49,12 @@ const Home = () => {
   
   const handleToggleAddModal = () => {
     setOpenAddModal(!openAddModal);
+  }
+
+  const handleToggleEditModal = (post: PostEntity) => {
+    setNewPost({title: post.title, body: post.body})
+    setLocalPostId({id: post.id, userId: post.userId})
+    setOpenEditModal(!openEditModal);    
   }
   
 
@@ -85,8 +95,15 @@ const Home = () => {
       dispatch(deletePost(id))})
   };
   
-  const handleUpdatePost = (post: PostEntity) => {
-    updatePostMutationById(post)
+  const handleUpdatePost = () => {
+    setOpenEditModal(false)
+    const postBody = {
+      id: localPostId.id,
+      userId: localPostId.userId,
+      title: newPost.title,
+      body: newPost.body
+    }
+    updatePostMutationById(postBody)
     .unwrap()
     .then((res: any) => {
       dispatch(updatePost(res))
@@ -101,6 +118,14 @@ const Home = () => {
         handleCancelPost={handleCancelPost}
         setPost={setNewPost}
         savePost={handleCreatePost}
+        />
+      )}
+      {openEditModal && (
+        <Modal 
+        post={newPost}
+        handleCancelPost={handleCancelPost}
+        setPost={setNewPost}
+        savePost={handleUpdatePost}
         />
       )}
       {postsData.length && (
@@ -143,7 +168,7 @@ const Home = () => {
                         <Styled.TableDetail>{post.title}</Styled.TableDetail>
                         <Styled.TableDetail>{post.body}</Styled.TableDetail>
                         <Styled.TableDetail>
-                          <Styled.EditButton onClick={() => handleUpdatePost(post)}>Edit</Styled.EditButton>
+                          <Styled.EditButton onClick={() => handleToggleEditModal(post)}>Edit</Styled.EditButton>
                         </Styled.TableDetail>
                         <Styled.TableDetail>
                           <Styled.DeleteButton onClick={() => handleDeletePost(post.id)}>Delete</Styled.DeleteButton>
