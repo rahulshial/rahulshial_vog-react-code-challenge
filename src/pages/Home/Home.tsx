@@ -5,6 +5,7 @@ import {
   useGetAllPostsQuery, 
   useGetPostByIdQuery, 
   useCreatePostMutation,
+  useUpdatePostByIdMutation,
   useDeletePostByIdMutation } from '../../redux/api/posts.api';
   import { 
     setPostList,
@@ -13,11 +14,12 @@ import {
     createPost, setPostListById } from '../../redux/reducers/posts.reducer';
 import Modal from './Modal';
 import * as Styled from './Home.styles';
+import { PostEntity } from '../../redux/reducers/Posts.type';
 
 const Home = () => {
   const dispatch = useAppDispatch();
   const [searchId, setSearchId] = useState(0);
-  const [openModal, setOpenModal] = useState(false);
+  const [openAddModal, setOpenAddModal] = useState(false);
   const [newPost, setNewPost] = useState({
     title: '',
     body: '',
@@ -27,6 +29,7 @@ const Home = () => {
   const {data: postData, isSuccess} = useGetPostByIdQuery(searchId);
   const [createPostMutation] = useCreatePostMutation();
   const [deletePostMutationById] = useDeletePostByIdMutation();
+  const [updatePostMutationById] = useUpdatePostByIdMutation();
 
   useEffect(() => {
     if(data){
@@ -40,20 +43,17 @@ const Home = () => {
     }
   }, [dispatch, postData, searchId])
   
-  const handleToggleModal = () => {
-    setOpenModal(!openModal);
+  const handleToggleAddModal = () => {
+    setOpenAddModal(!openAddModal);
   }
+  
 
   const handleSearchIdChange = (event: any) => {
     setSearchId(event.target.value);
   };
 
-  const handleTextChange = (key: string, value: string) => {
-    setNewPost((prev) => ({...prev, [key]: value}));
-  }
-
   const handleCreatePost = () => {
-    setOpenModal(false)
+    setOpenAddModal(false)
     const postBody = {
       title: newPost.title,
       body: newPost.body,
@@ -71,7 +71,7 @@ const Home = () => {
   };
 
   const handleCancelPost = () => {
-    setOpenModal(false);
+    setOpenAddModal(false);
     setNewPost({
       title: '',
       body: '',
@@ -85,107 +85,75 @@ const Home = () => {
       dispatch(deletePost(id))})
   };
   
+  const handleUpdatePost = (post: PostEntity) => {
+    updatePostMutationById(post)
+    .unwrap()
+    .then((res: any) => {
+      dispatch(updatePost(res))
+    })
+  }
+
   return (
     <>
-    {openModal && (
-      <Styled.Modal>
-        <Styled.RowContainer>
-          <Styled.PostTitle>Title: </Styled.PostTitle>
-        <Styled.InputContainer>
-          <form>
-            <Styled.PostInput
-              type='text'
-              placeHolder='title'
-              value={newPost.title}
-              //@ts-ignore
-              onChange={({target: {value: title}}) => handleTextChange("title", title)}
-              >
-            </Styled.PostInput>
-          </form>
-          </Styled.InputContainer>
-        </Styled.RowContainer>
-        <Styled.RowContainer>
-          <Styled.PostTitle>Post: </Styled.PostTitle>
-        <Styled.InputContainer>
-          <form>
-            <Styled.PostInput
-              type='text'
-              placeHolder='post'
-              value={newPost.body}
-              //@ts-ignore
-              onChange={({target: {value: body}}) => handleTextChange("body", body)}
-              >
-            </Styled.PostInput>
-          </form>
-          </Styled.InputContainer>
-        </Styled.RowContainer>
-        <Styled.PostButtonContainer>
-          <Styled.SavePostButtonContainer>
-            <Styled.SavePostButton
-            onClick={handleCreatePost}>
-              Save Post
-            </Styled.SavePostButton>
-          </Styled.SavePostButtonContainer>
-          <Styled.CancelButtonContainer>
-            <Styled.CancelPostButton
-              onClick={handleCancelPost}>
-              Cancel
-            </Styled.CancelPostButton>
-          </Styled.CancelButtonContainer>
-        </Styled.PostButtonContainer>
-      </Styled.Modal>
-    )}
-    {postsData.length && (
-      <><Styled.Header>
-          <Styled.AddPostButtonContainer>
-            <Styled.AddPostButton onClick={handleToggleModal}>Add Posts</Styled.AddPostButton>
-          </Styled.AddPostButtonContainer>
-          <Styled.SearchBarContainer>
-            <Styled.SearchFormContainer>
-              <form>
-                <Styled.Input
-                  type="number"
-                  placeholder="Search.."
-                  name="searchId"
-                  value={searchId}
-                  onChange={handleSearchIdChange}
-                  >
-                </Styled.Input>
-                <Styled.SearchButton
-                  type="submit"><i className="fa fa-search"></i>
-                </Styled.SearchButton>
-              </form>
-            </Styled.SearchFormContainer>
-          </Styled.SearchBarContainer>
-        </Styled.Header><Styled.Table>
-            <Styled.TableHead>
-              <Styled.TableRow>
-                <Styled.TableHeader>Id</Styled.TableHeader>
-                <Styled.TableHeader>Title</Styled.TableHeader>
-                <Styled.TableHeader>Post</Styled.TableHeader>
-                <Styled.TableHeader>Edit</Styled.TableHeader>
-                <Styled.TableHeader>Delete</Styled.TableHeader>
-              </Styled.TableRow>
-            </Styled.TableHead>
-            <Styled.TableBody>
-              {postsData.map((post) => {
-                return (
-                    <Styled.TableRow key={post.id}>
-                      <Styled.TableDetail>{post.id}</Styled.TableDetail>
-                      <Styled.TableDetail>{post.title}</Styled.TableDetail>
-                      <Styled.TableDetail>{post.body}</Styled.TableDetail>
-                      <Styled.TableDetail>
-                        <Styled.EditButton onClick={() => {console.log(post.id)}}>Edit</Styled.EditButton>
-                      </Styled.TableDetail>
-                      <Styled.TableDetail>
-                        <Styled.DeleteButton onClick={() => handleDeletePost(post.id)}>Delete</Styled.DeleteButton>
-                      </Styled.TableDetail>
-                    </Styled.TableRow>
-                )
-              })}
-            </Styled.TableBody>
-          </Styled.Table></>
-    )}
+      {openAddModal && (
+        <Modal 
+        post={newPost}
+        handleCancelPost={handleCancelPost}
+        setPost={setNewPost}
+        savePost={handleCreatePost}
+        />
+      )}
+      {postsData.length && (
+        <><Styled.Header>
+            <Styled.AddPostButtonContainer>
+              <Styled.AddPostButton onClick={handleToggleAddModal}>Add Posts</Styled.AddPostButton>
+            </Styled.AddPostButtonContainer>
+            <Styled.SearchBarContainer>
+              <Styled.SearchFormContainer>
+                <form>
+                  <Styled.Input
+                    type="number"
+                    placeholder="Search.."
+                    name="searchId"
+                    value={searchId}
+                    onChange={handleSearchIdChange}
+                    >
+                  </Styled.Input>
+                  <Styled.SearchButton
+                    type="submit"><i className="fa fa-search"></i>
+                  </Styled.SearchButton>
+                </form>
+              </Styled.SearchFormContainer>
+            </Styled.SearchBarContainer>
+          </Styled.Header><Styled.Table>
+              <Styled.TableHead>
+                <Styled.TableRow>
+                  <Styled.TableHeader>Id</Styled.TableHeader>
+                  <Styled.TableHeader>Title</Styled.TableHeader>
+                  <Styled.TableHeader>Post</Styled.TableHeader>
+                  <Styled.TableHeader>Edit</Styled.TableHeader>
+                  <Styled.TableHeader>Delete</Styled.TableHeader>
+                </Styled.TableRow>
+              </Styled.TableHead>
+              <Styled.TableBody>
+                {postsData.map((post) => {
+                  return (
+                      <Styled.TableRow key={post.id}>
+                        <Styled.TableDetail>{post.id}</Styled.TableDetail>
+                        <Styled.TableDetail>{post.title}</Styled.TableDetail>
+                        <Styled.TableDetail>{post.body}</Styled.TableDetail>
+                        <Styled.TableDetail>
+                          <Styled.EditButton onClick={() => handleUpdatePost(post)}>Edit</Styled.EditButton>
+                        </Styled.TableDetail>
+                        <Styled.TableDetail>
+                          <Styled.DeleteButton onClick={() => handleDeletePost(post.id)}>Delete</Styled.DeleteButton>
+                        </Styled.TableDetail>
+                      </Styled.TableRow>
+                  )
+                })}
+              </Styled.TableBody>
+            </Styled.Table></>
+      )}
     </>
   )
 }

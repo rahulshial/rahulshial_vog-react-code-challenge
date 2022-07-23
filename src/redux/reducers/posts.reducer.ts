@@ -22,11 +22,19 @@ export const postsSlice = createSlice({
       return state
     },
     updatePost: (state, action: PayloadAction<PostEntity>) => {
-      // state = [...state, ...action.payload]
-      // return { ...state, ...action.payload }
+      state = [...state, action.payload]
+      const updatedState = state.map((post) => {
+        if(post.id === action.payload.id) {
+          return action.payload
+        } else {
+          return post
+        }
+      })
+      state = [...updatedState]
+      return state
     },
     deletePost: (state, {payload: id}: PayloadAction<number | null>) => {
-      const updatedState = state.filter((item) => item.id !== id)
+      const updatedState = state.filter((post) => post.id !== id)
       state = [...updatedState]
       return state
     }
