@@ -121,3 +121,81 @@ export const DeleteButton = styled.button`
   cursor: pointer;
 `;
 
+
+export const Modal = styled.div`
+display: flex;
+flex-direction: column;
+max-height: 225px;
+max-width: 500px;
+min-height: 225px;
+min-width: 500px;
+border: 2px solid;
+position: fixed;
+top: 30%;
+left: 30%;
+transform: translate(-30%, -30%);
+background-color: white;
+`;
+
+export const RowContainer = styled.div`
+  display: flex;
+  width: 100%;
+  text-align: justify;
+  align-items: center;
+`;
+
+export const PostTitle = styled.h4`
+  flex: .25;
+  padding: 10px;
+`;
+
+export const InputContainer = styled.div`
+  flex: .75;
+`;
+
+export const PostInput = styled.input`
+  font-size: 16px;
+  border: 1px solid;
+  width: 90%;
+`;
+
+export const PostButtonContainer = styled.div`
+  display: flex;
+  flex-direction: row;
+`;
+
+export const SavePostButtonContainer = styled.div`
+  flex: 1;
+`;
+
+export const CancelButtonContainer = styled.div`
+  flex: 1;
+`;
+
+export const SavePostButton = styled.button`
+  background-color: white;
+  border: 1px solid;
+  border-radius: 5px;
+  color: #04AA6D;
+  padding: 10px 15px;
+  text-align: center;
+  text-decoration: none;
+  display: inline-block;
+  font-size: 14px;
+  cursor: pointer;
+  width: 90%
+`;
+
+export const CancelPostButton = styled.button`
+  background-color: white;
+  border: 1px solid;
+  border-radius: 5px;
+  color: red;
+  padding: 10px 15px;
+  text-align: center;
+  text-decoration: none;
+  display: inline-block;
+  font-size: 14px;
+  cursor: pointer;
+  width: 90%
+`;
