@@ -65,7 +65,6 @@ const Home = () => {
       dispatch(deletePost(id))})
   };
 
-
   return (
     <>
       {(addModalToggle || editModalToggle) && (
