@@ -25,20 +25,20 @@ const Home = () => {
   const [deletePostMutationById] = useDeletePostByIdMutation();
   const addModalToggle = useAppSelector(state => state.ui.posts.addModalToggle)
   const editModalToggle = useAppSelector(state => state.ui.posts.editModalToggle)
-  const searchIdRedux = useAppSelector(state => state.ui.posts.searchId)
-  const {data: postData} = useGetPostByIdQuery(searchIdRedux);
+  const searchId = useAppSelector(state => state.ui.posts.searchId)
+  const {data: postData} = useGetPostByIdQuery(searchId);
 
   useEffect(() => {
-    if(data && !searchIdRedux){
+    if(data && !searchId){
       dispatch(setPostList(data))
     }
-  }, [data, dispatch, searchIdRedux]);
+  }, [data, dispatch, searchId]);
 
   useEffect(() => {
-    if (postData && searchIdRedux) {
+    if (postData && searchId) {
         dispatch(setPostListById([postData]));
     }
-  }, [dispatch, postData, searchIdRedux])
+  }, [dispatch, postData, searchId])
   
   const handleToggleAddModal = () => {
     dispatch(toggleAddModal(!addModalToggle))
@@ -84,7 +84,7 @@ const Home = () => {
                     type="number"
                     placeholder="Search.."
                     name="searchId"
-                    value={searchIdRedux}
+                    value={searchId}
                     onChange={handleSearchIdChange}
                     >
                   </Styled.Input>
