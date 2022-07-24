@@ -8,10 +8,10 @@ import * as Styled from './PostalLookup.styles';
 
 const PostalLookup = () => {
   const dispatch = useAppDispatch();
-
   const areaDetails = useAppSelector(state => state.postalLookup);
   const searchCode = useAppSelector(state => state.ui.postalLookup.searchCode)
-  const { data } = useGetAreaDetailsByPostalCodeQuery(searchCode);
+  const skip = useAppSelector(state => state.ui.postalLookup.skip);
+  const { data } = useGetAreaDetailsByPostalCodeQuery(searchCode, { skip });
   
   useEffect(() => {
     if(data && searchCode) {
