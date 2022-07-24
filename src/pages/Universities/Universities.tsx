@@ -37,28 +37,28 @@ const Universities = () => {
       <Styled.TableBody>
         {universitiesData.map((university: UniversitiesEntity) => {
           return (
-              <Styled.TableRow key={university.name}>
-                <Styled.TableDetail>{university.country}</Styled.TableDetail>
-                <Styled.TableDetail>{university.name}</Styled.TableDetail>
-                <Styled.TableDetail>
-                  {university.web_pages.map((website) => {
-                    return (
-                      <a key={website} href={website}>
-                        <h4>{website}</h4>
-                      </a>
-                    )
-                  })}
-                </Styled.TableDetail>
-                <Styled.TableDetail>
-                  {university.domains.map((domain) => {
-                    return (
-                      <a key={domain} href={domain}>
-                        <h4>{domain}</h4>
-                      </a>
-                    )
-                  })}
-                </Styled.TableDetail>
-              </Styled.TableRow>
+            <Styled.TableRow key={university.name}>
+              <Styled.TableDetail>{university.country}</Styled.TableDetail>
+              <Styled.TableDetail>{university.name}</Styled.TableDetail>
+              <Styled.TableDetail>
+                {university.web_pages.map((website) => {
+                  return (
+                    <a key={website} href={website}>
+                      <h4>{website}</h4>
+                    </a>
+                  )
+                })}
+              </Styled.TableDetail>
+              <Styled.TableDetail>
+                {university.domains.map((domain) => {
+                  return (
+                    <a key={domain} href={domain}>
+                      <h4>{domain}</h4>
+                    </a>
+                  )
+                })}
+              </Styled.TableDetail>
+            </Styled.TableRow>
           )
           })}
 
