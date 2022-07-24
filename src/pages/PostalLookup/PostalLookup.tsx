@@ -3,12 +3,11 @@ import React, { useEffect, useState } from 'react';
 import { useGetAreaDetailsByPostalCodeQuery } from '../../redux/api/postalLookup.api';
 import { useAppDispatch, useAppSelector } from '../../redux/hooks';
 import { setAreaDetailsByPostalCode } from '../../redux/reducers/postalLookup.reducer';
-import { updatePostalSearchCode } from '../../redux/reducers/ui.reducer';
+import { updatePostalLookupSkip, updatePostalSearchCode } from '../../redux/reducers/ui.reducer';
 import * as Styled from './PostalLookup.styles';
 
 const PostalLookup = () => {
   const dispatch = useAppDispatch();
-  // const [skip, setSkip] = useState(true)
 
   const areaDetails = useAppSelector(state => state.postalLookup);
   const searchCode = useAppSelector(state => state.ui.postalLookup.searchCode)
@@ -20,13 +19,12 @@ const PostalLookup = () => {
     }
   }, [data, dispatch, searchCode])
   
-  
   const handleSearchCodeChange = (event: any) => {
     if(event.target.value === "") {
-      setSkip(false)
-      dispatch(updatePostalSearchCode(undefined))
+      dispatch(updatePostalLookupSkip(true))
+      dispatch(updatePostalSearchCode(0))
     } else {
-      setSkip(true)
+      dispatch(updatePostalLookupSkip(false))
       dispatch(updatePostalSearchCode(event.target.value))
     }
   };
@@ -42,7 +40,7 @@ const PostalLookup = () => {
                 type="text"
                 placeholder="Search.."
                 name="searchCode"
-                value={searchCode}
+                value={searchCode === 0 ? '' : searchCode}
                 onChange={handleSearchCodeChange}
               >
               </Styled.Input>

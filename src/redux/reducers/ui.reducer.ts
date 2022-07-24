@@ -16,7 +16,9 @@ export interface UiState {
     skip: boolean,
   },
   postalLookup :{
-    searchCode: number | string | undefined
+    searchCode: number,
+    skip: boolean,
+
   }
 }
 
@@ -39,7 +41,8 @@ const initialState = (): UiState => {
       skip: true,
     }
     state.postalLookup = {
-      searchCode: undefined
+      searchCode: 0,
+      skip: true,
     }
     return state
   } else {
@@ -59,7 +62,8 @@ const initialState = (): UiState => {
         skip: true,
       },
       postalLookup: {
-        searchCode: undefined,
+        searchCode: 0,
+        skip: true,
       }
     }
   }
@@ -85,11 +89,14 @@ export const uiSlice = createSlice({
     toggleEditModal: (state, action: PayloadAction<boolean>) => {
       state.posts.editModalToggle = !!action.payload
     },
-    updatePostalSearchCode: (state, action: PayloadAction<number | string | undefined>) => {
+    updatePostalSearchCode: (state, action: PayloadAction<number>) => {
       state.postalLookup.searchCode = action.payload
     },
     updatePostsSkip: (state, action: PayloadAction<boolean>) => {
       state.posts.skip = !!action.payload
+    },
+    updatePostalLookupSkip: (state, action: PayloadAction<boolean>) => {
+      state.postalLookup.skip = !!action.payload
     }
   },
 })
@@ -102,6 +109,7 @@ export const {
   toggleEditModal,
   updatePostalSearchCode,
   updatePostsSkip,
+  updatePostalLookupSkip,
 } = uiSlice.actions
 
 export const uiReducer = uiSlice.reducer
