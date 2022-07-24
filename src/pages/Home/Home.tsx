@@ -60,6 +60,7 @@ const Home = () => {
       dispatch(deletePost(id))})
   };
 
+
   return (
     <>
       {(addModalToggle || editModalToggle) && (
@@ -98,7 +99,7 @@ const Home = () => {
               </Styled.TableRow>
             </Styled.TableHead>
             <Styled.TableBody>
-              {postsData && postsData.map((post) => {
+              {postsData.map((post) => {
                 return (
                   <Styled.TableRow key={post.id}>
                     <Styled.TableDetail>{post.id}</Styled.TableDetail>
