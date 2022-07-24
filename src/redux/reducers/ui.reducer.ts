@@ -2,7 +2,7 @@ import {createSlice, PayloadAction} from "@reduxjs/toolkit"
 
 export interface UiState {
   posts: {
-    searchId: number | undefined,
+    searchId: number,
     newPost: {
       title: string,
       body: string,
@@ -13,6 +13,7 @@ export interface UiState {
     },
     addModalToggle: boolean,
     editModalToggle: boolean,
+    skip: boolean,
   },
 }
 
@@ -21,7 +22,7 @@ const initialState = (): UiState => {
   if (localUiState) {
     const state = (JSON.parse(localUiState) as UiState)
     state.posts = {
-      searchId: undefined,
+      searchId: 0,
       newPost: {
         title: '',
         body: '',
@@ -32,12 +33,13 @@ const initialState = (): UiState => {
       },
       addModalToggle: false,
       editModalToggle: false,
+      skip: true,
     }
     return state
   } else {
     return {
       posts: {
-        searchId: undefined,
+        searchId: 0,
         newPost: {
           title: '',
           body: '',
@@ -48,6 +50,7 @@ const initialState = (): UiState => {
         },
         addModalToggle: false,
         editModalToggle: false,
+        skip: true,
       },
     }
   }
@@ -57,7 +60,7 @@ export const uiSlice = createSlice({
   name: 'ui',
   initialState: initialState(),
   reducers: {
-    updatePostsSearchId: (state, action: PayloadAction<number | undefined>) => {
+    updatePostsSearchId: (state, action: PayloadAction<number>) => {
       state.posts.searchId = action.payload
     },
     updatePostsNewPost: (state, action: PayloadAction<{}>) => {
@@ -71,8 +74,10 @@ export const uiSlice = createSlice({
       state.posts.addModalToggle = !!action.payload
     },
     toggleEditModal: (state, action: PayloadAction<boolean>) => {
-      console.log(action.payload)
       state.posts.editModalToggle = !!action.payload
+    },
+    updatePostsSkip: (state, action: PayloadAction<boolean>) => {
+      state.posts.skip = !!action.payload
     }
   },
 })
@@ -83,6 +88,7 @@ export const {
   updatePostsEditPostId,
   toggleAddModal,
   toggleEditModal,
+  updatePostsSkip,
 } = uiSlice.actions
 
 export const uiReducer = uiSlice.reducer
