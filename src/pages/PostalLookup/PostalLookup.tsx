@@ -6,7 +6,7 @@ import * as Styled from './PostalLookup.styles';
 
 const PostalLookup = () => {
   const dispatch = useAppDispatch();
-  const [searchCode, setSearchCode] = useState('')
+  const [searchCode, setSearchCode] = useState(0)
 
   const areaDetails = useAppSelector(state => state.postalLookup);
   const { data } = useGetAreaDetailsByPostalCodeQuery(searchCode);
@@ -18,9 +18,7 @@ const PostalLookup = () => {
   }, [data, dispatch, searchCode])
 
   const handleSearchCodeChange = (event: any) => {
-    if(event.target.value > 0) {
-      setSearchCode(event.target.value);
-    }
+    setSearchCode(event.target.value);
   };
 
   return (
