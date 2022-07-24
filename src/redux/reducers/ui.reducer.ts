@@ -8,6 +8,10 @@ export interface UiState {
       title: string,
       body: string,
     }
+    editPostId: {
+      id: number,
+      userId: number,
+    },
     addModalToggle: boolean,
     editModalToggle: boolean,
   },
@@ -23,6 +27,10 @@ const initialState = (): UiState => {
         title: '',
         body: '',
       },
+      editPostId: {
+        id: 0,
+        userId: 0,
+      },
       addModalToggle: false,
       editModalToggle: false,
     }
@@ -34,6 +42,10 @@ const initialState = (): UiState => {
         newPost: {
           title: '',
           body: '',
+        },
+        editPostId: {
+          id: 0,
+          userId: 0,
         },
         addModalToggle: false,
         editModalToggle: false,
@@ -53,6 +65,9 @@ export const uiSlice = createSlice({
     updatePostsNewPost: (state, action: PayloadAction<{}>) => {
       state.posts.newPost = {...state.posts.newPost, ...action.payload}
     },
+    updatePostsEditPostId: (state, action: PayloadAction<{}>) => {
+      state.posts.editPostId = {...state.posts.editPostId, ...action.payload}
+    },
     toggleAddModal: (state, action: PayloadAction<boolean>) => {
       console.log(action.payload)
       state.posts.addModalToggle = !!action.payload
@@ -67,6 +82,7 @@ export const uiSlice = createSlice({
 export const {
   updatePostsSearchId,
   updatePostsNewPost,
+  updatePostsEditPostId,
   toggleAddModal,
   toggleEditModal,
 } = uiSlice.actions
