@@ -10,7 +10,7 @@ export const universitiesSlice = createSlice({
   initialState,
   reducers: {
     setUniversitiesByCountry: (state, action: PayloadAction<UniversitiesState>) => {
-      state = [...action.payload]
+      state = [...state, ...action.payload]
       return state
     },
   },

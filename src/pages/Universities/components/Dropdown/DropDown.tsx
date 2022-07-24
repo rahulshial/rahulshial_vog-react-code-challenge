@@ -1,18 +1,13 @@
-/* eslint-disable @typescript-eslint/no-unused-vars */
 import React, { useState, useEffect } from 'react'
 import { useGetAllCountriesQuery } from '../../../../redux/api/countryList.api';
-import { countryList } from '../../data';
 import { useAppDispatch, useAppSelector } from '../../../../redux/hooks';
 import * as Styled from './DropDown.styles';
-import { setCountry, setCountrylist } from '../../../../redux/reducers/countryList/countryList.reducer';
+import { setCountrylist } from '../../../../redux/reducers/countryList/countryList.reducer';
+import { updateSelectedCountry } from '../../../../redux/reducers/ui.reducer';
 
-interface Props {
-  setSelectedCountry: React.Dispatch<React.SetStateAction<string>>
-}
-const DropDown = ({setSelectedCountry}: Props) => {
+const DropDown = () => {
   const dispatch = useAppDispatch();
   const [open, setOpen] = useState(false);
-  const [selection, setSelection] = useState('Canada');
   const toggle = () => setOpen(!open);
   const countryListData = useAppSelector(state => state.countryList);
   const { data } = useGetAllCountriesQuery();
@@ -24,8 +19,7 @@ const DropDown = ({setSelectedCountry}: Props) => {
   }, [data, dispatch])
   
   const handleOnClick = (country: any) => {
-    setSelectedCountry(country);
-    // dispatch(setCountry(country))
+    dispatch(updateSelectedCountry(country))
     setOpen(false)
   }
 
@@ -38,7 +32,7 @@ const DropDown = ({setSelectedCountry}: Props) => {
           <Styled.Div>
           {countryListData && countryListData.map(country => {
             return (
-              <Styled.Country key={country.name.common} onClick={() => handleOnClick(country)}>{country.name.common}
+              <Styled.Country key={country.name.common} onClick={() => handleOnClick(country.name.common)}>{country.name.common}
               </Styled.Country>
             )
           })}

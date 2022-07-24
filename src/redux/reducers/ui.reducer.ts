@@ -14,6 +14,9 @@ export interface UiState {
     addModalToggle: boolean,
     editModalToggle: boolean,
   },
+  country:{
+    selectedCountry: string,
+  }
 }
 
 const initialState = (): UiState => {
@@ -33,6 +36,9 @@ const initialState = (): UiState => {
       addModalToggle: false,
       editModalToggle: false,
     }
+    state.country = {
+      selectedCountry: 'Canada',
+    }
     return state
   } else {
     return {
@@ -49,10 +55,12 @@ const initialState = (): UiState => {
         addModalToggle: false,
         editModalToggle: false,
       },
+      country: {
+        selectedCountry: 'Canada',
+      },
     }
   }
 }
-
 
 export const uiSlice = createSlice({
   name: 'ui',
@@ -68,13 +76,14 @@ export const uiSlice = createSlice({
       state.posts.editPostId = {...state.posts.editPostId, ...action.payload}
     },
     toggleAddModal: (state, action: PayloadAction<boolean>) => {
-      console.log(action.payload)
       state.posts.addModalToggle = !!action.payload
     },
     toggleEditModal: (state, action: PayloadAction<boolean>) => {
-      console.log(action.payload)
       state.posts.editModalToggle = !!action.payload
-    }
+    },
+    updateSelectedCountry: (state, action: PayloadAction<string>) => {
+      state.country.selectedCountry = action.payload
+    },
   },
 })
 
@@ -84,6 +93,7 @@ export const {
   updatePostsEditPostId,
   toggleAddModal,
   toggleEditModal,
+  updateSelectedCountry
 } = uiSlice.actions
 
 export const uiReducer = uiSlice.reducer

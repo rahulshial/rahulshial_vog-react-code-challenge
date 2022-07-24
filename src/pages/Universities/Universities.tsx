@@ -1,22 +1,30 @@
-import React, { useState } from 'react'
-import { universities } from './data'
+/* eslint-disable array-callback-return */
+import React, { useEffect } from 'react'
 import DropDown from './components/Dropdown/DropDown';
 import { useAppDispatch, useAppSelector } from '../../redux/hooks';
 
 import * as Styled from './Universities.styles';
 import { useGetUniversitiesByCountryQuery } from '../../redux/api/universities.api';
+import { setUniversitiesByCountry } from '../../redux/reducers/universities/universities.reducer';
+import { UniversitiesEntity } from '../../redux/reducers/universities/universities.type';
 
 const Universities = () => {
   const dispatch = useAppDispatch();
-  const [selectedCountry, setSelectedCountry] = useState('Canada');
-  const universitiesData = useAppSelector(state => state.universities);
+  const selectedCountry = useAppSelector(state => state.ui.country.selectedCountry)
   const { data } = useGetUniversitiesByCountryQuery(selectedCountry)
+  const universitiesData = useAppSelector(state => state.universities);
+
+  useEffect(() => {
+    if(data) {
+      dispatch(setUniversitiesByCountry([data]))
+    }
+  }, [data, dispatch, universitiesData])
 
   return (
     <>
       <Styled.Header>
         <Styled.Title>Universities</Styled.Title>
-        <DropDown setSelectedCountry={setSelectedCountry}/>
+        <DropDown />
       </Styled.Header>
     <Styled.Table>
       <Styled.TableHead>
@@ -28,7 +36,7 @@ const Universities = () => {
         </Styled.TableRow>
       </Styled.TableHead>
       <Styled.TableBody>
-        {universities.map((university) => {
+        {universitiesData.map((university: UniversitiesEntity) => {
           return (
             <>
               <Styled.TableRow key={university.name}>
