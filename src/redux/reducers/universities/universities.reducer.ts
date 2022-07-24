@@ -6,11 +6,11 @@ export type UniversitiesState = UniversitiesEntity[];
 const initialState: UniversitiesState = [];
 
 export const universitiesSlice = createSlice({
-  name: 'Universities',
+  name: 'universities',
   initialState,
   reducers: {
     setUniversitiesByCountry: (state, action: PayloadAction<UniversitiesState>) => {
-      state = [...state, ...action.payload]
+      state = [...action.payload]
       return state
     },
   },
@@ -20,4 +20,4 @@ export const {
   setUniversitiesByCountry,
 } = universitiesSlice.actions;
 
-export const UniversitiesReducer = universitiesSlice.reducer;
+export const universitiesReducer = universitiesSlice.reducer;

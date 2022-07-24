@@ -5,7 +5,7 @@ import { postalLookupReducer as postalLookup} from "./reducers/postalLookup/post
 import { postalLookupApi } from "./api/postalLookup.api";
 import { countryListReducer as countryList } from "./reducers/countryList/countryList.reducer";
 import { countryListApi } from "./api/countryList.api";
-import { UniversitiesReducer as universities } from "./reducers/universities/universities.reducer";
+import { universitiesReducer as universities } from "./reducers/universities/universities.reducer";
 import { universitiesApi } from "./api/universities.api";
 import { uiReducer as ui } from "./reducers/ui.reducer";
 

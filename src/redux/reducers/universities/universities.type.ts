@@ -1,6 +1,6 @@
 export interface UniversitiesEntity {
   "alpha_two_code": string,
-  "state-province": null,
+  "state-province": string | null,
   "country": string,
   "name": string,
   "web_pages": [],

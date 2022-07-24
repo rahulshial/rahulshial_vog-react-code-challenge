@@ -9,7 +9,7 @@ export const universitiesApi = createApi({
     baseUrl: 'http://universities.hipolabs.com',
   }),
   endpoints: (builder) => ({
-    getUniversitiesByCountry: builder.query<UniversitiesEntity, string>({
+    getUniversitiesByCountry: builder.query<UniversitiesEntity[], string>({
       query: (country) => `/search?country=${country}`
     }),
   })

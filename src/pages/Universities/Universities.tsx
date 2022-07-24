@@ -1,4 +1,3 @@
-/* eslint-disable array-callback-return */
 import React, { useEffect } from 'react'
 import DropDown from './components/Dropdown/DropDown';
 import { useAppDispatch, useAppSelector } from '../../redux/hooks';
@@ -16,9 +15,9 @@ const Universities = () => {
 
   useEffect(() => {
     if(data) {
-      dispatch(setUniversitiesByCountry([data]))
+      dispatch(setUniversitiesByCountry(data))
     }
-  }, [data, dispatch, universitiesData])
+  }, [data, dispatch])
 
   return (
     <>
