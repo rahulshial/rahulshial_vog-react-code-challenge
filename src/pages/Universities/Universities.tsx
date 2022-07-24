@@ -37,7 +37,6 @@ const Universities = () => {
       <Styled.TableBody>
         {universitiesData.map((university: UniversitiesEntity) => {
           return (
-            <>
               <Styled.TableRow key={university.name}>
                 <Styled.TableDetail>{university.country}</Styled.TableDetail>
                 <Styled.TableDetail>{university.name}</Styled.TableDetail>
@@ -60,7 +59,6 @@ const Universities = () => {
                   })}
                 </Styled.TableDetail>
               </Styled.TableRow>
-            </>
           )
           })}
 
