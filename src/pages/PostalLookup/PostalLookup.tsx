@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { useGetAreaDetailsByPostalCodeQuery } from '../../redux/api/postalLookup.api';
 import { useAppDispatch, useAppSelector } from '../../redux/hooks';
-import { setAreaDetailsByPostalCode } from '../../redux/reducers/postalLookup.reducer';
+import { setAreaDetailsByPostalCode } from '../../redux/reducers/postalLookup/postalLookup.reducer';
 import * as Styled from './PostalLookup.styles';
 
 const PostalLookup = () => {

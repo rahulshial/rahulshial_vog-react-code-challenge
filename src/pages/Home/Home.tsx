@@ -10,10 +10,10 @@ import {
     setPostList,
     deletePost,
     updatePost,
-    createPost, setPostListById } from '../../redux/reducers/posts.reducer';
-import Modal from './Modal';
+    createPost, setPostListById } from '../../redux/reducers/posts/posts.reducer';
+import Modal from './components/Modal';
 import * as Styled from './Home.styles';
-import { PostEntity } from '../../redux/reducers/Posts.type';
+import { PostEntity } from '../../redux/reducers/posts/Posts.type';
 
 const Home = () => {
   const dispatch = useAppDispatch();

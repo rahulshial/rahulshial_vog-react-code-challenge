@@ -1,5 +1,5 @@
 import { createApi, fetchBaseQuery } from '@reduxjs/toolkit/query/react';
-import { PostalLookupEntity } from '../reducers/postalLookup.type';
+import { PostalLookupEntity } from '../reducers/postalLookup/postalLookup.type';
 
 export const postalLookupApi = createApi({
   reducerPath: 'postalLookupApi',

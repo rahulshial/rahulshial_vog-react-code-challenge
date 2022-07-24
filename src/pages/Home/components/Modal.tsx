@@ -1,6 +1,6 @@
 import React from 'react'
 
-import * as Styled from './Home.styles';
+import * as Styled from '../Home.styles';
 interface Props {
 post: {title: string, body: string},
 setPost: React.Dispatch<React.SetStateAction<any>>,
