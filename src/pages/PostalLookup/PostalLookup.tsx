@@ -48,7 +48,7 @@ const PostalLookup = () => {
           </Styled.SearchFormContainer>
         </Styled.SearchBarContainer>
       </Styled.Header>
-      {areaDetails['post code'] && 
+      {!skip && areaDetails['post code'] && 
         (
         <>
           <Styled.DataContainer>
