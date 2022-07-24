@@ -1,17 +1,18 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect } from 'react';
 import { useGetAreaDetailsByPostalCodeQuery } from '../../redux/api/postalLookup.api';
 import { useAppDispatch, useAppSelector } from '../../redux/hooks';
 import { setAreaDetailsByPostalCode } from '../../redux/reducers/postalLookup.reducer';
+import { updatePostalSearchCode } from '../../redux/reducers/ui.reducer';
 import * as Styled from './PostalLookup.styles';
 
 const PostalLookup = () => {
   const dispatch = useAppDispatch();
-  const [searchCode, setSearchCode] = useState(0)
+  // const [searchCode, setSearchCode] = useState(0)
 
   const areaDetails = useAppSelector(state => state.postalLookup);
-  const searchCode
-  const { data } = useGetAreaDetailsByPostalCodeQuery(searchCode);
-
+  const searchCode = useAppSelector(state => state.ui.postalLookup.searchCode)
+  const { data, } = useGetAreaDetailsByPostalCodeQuery(searchCode);
+  
   useEffect(() => {
     if(data && searchCode) {
       dispatch(setAreaDetailsByPostalCode(data))
@@ -19,7 +20,11 @@ const PostalLookup = () => {
   }, [data, dispatch, searchCode])
 
   const handleSearchCodeChange = (event: any) => {
-    setSearchCode(event.target.value);
+    if(event.target.value === "") {
+      dispatch(updatePostalSearchCode(undefined))
+    } else {
+      dispatch(updatePostalSearchCode(event.target.value))
+    }
   };
 
   return (

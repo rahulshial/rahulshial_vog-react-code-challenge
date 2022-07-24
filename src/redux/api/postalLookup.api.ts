@@ -9,7 +9,7 @@ export const postalLookupApi = createApi({
     baseUrl: 'https://api.zippopotam.us/us',
   }),
   endpoints: (builder) => ({
-    getAreaDetailsByPostalCode: builder.query<PostalLookupEntity, number>({
+    getAreaDetailsByPostalCode: builder.query<PostalLookupEntity, number | string | undefined>({
       query: (id) => `/${id}`
     }),
   })
