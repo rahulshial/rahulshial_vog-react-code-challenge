@@ -1,4 +1,5 @@
-import React, { useEffect } from 'react';
+/* eslint-disable @typescript-eslint/no-unused-vars */
+import React, { useEffect, useState } from 'react';
 import { useGetAreaDetailsByPostalCodeQuery } from '../../redux/api/postalLookup.api';
 import { useAppDispatch, useAppSelector } from '../../redux/hooks';
 import { setAreaDetailsByPostalCode } from '../../redux/reducers/postalLookup.reducer';
@@ -7,22 +8,25 @@ import * as Styled from './PostalLookup.styles';
 
 const PostalLookup = () => {
   const dispatch = useAppDispatch();
-  // const [searchCode, setSearchCode] = useState(0)
+  // const [skip, setSkip] = useState(true)
 
   const areaDetails = useAppSelector(state => state.postalLookup);
   const searchCode = useAppSelector(state => state.ui.postalLookup.searchCode)
-  const { data, } = useGetAreaDetailsByPostalCodeQuery(searchCode);
+  const { data } = useGetAreaDetailsByPostalCodeQuery(searchCode);
   
   useEffect(() => {
     if(data && searchCode) {
       dispatch(setAreaDetailsByPostalCode(data))
     }
   }, [data, dispatch, searchCode])
-
+  
+  
   const handleSearchCodeChange = (event: any) => {
     if(event.target.value === "") {
+      setSkip(false)
       dispatch(updatePostalSearchCode(undefined))
     } else {
+      setSkip(true)
       dispatch(updatePostalSearchCode(event.target.value))
     }
   };
