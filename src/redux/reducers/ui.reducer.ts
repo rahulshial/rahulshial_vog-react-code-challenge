@@ -1,5 +1,4 @@
 import {createSlice, PayloadAction} from "@reduxjs/toolkit"
-import { PostEntity } from "./Posts.type"
 
 export interface UiState {
   posts: {

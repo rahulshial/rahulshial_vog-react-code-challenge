@@ -4,14 +4,18 @@ import {
   useGetAllPostsQuery, 
   useGetPostByIdQuery, 
   useDeletePostByIdMutation } from '../../redux/api/posts.api';
-  import { 
-    setPostList,
-    deletePost,
-    setPostListById } from '../../redux/reducers/posts.reducer';
+import { 
+  setPostList,
+  deletePost,
+  setPostListById } from '../../redux/reducers/posts.reducer';
+import {
+  toggleAddModal,
+  toggleEditModal,
+  updatePostsEditPostId,
+  updatePostsNewPost } from '../../redux/reducers/ui.reducer';
 import Modal from './Modal';
-import * as Styled from './Home.styles';
 import { PostEntity } from '../../redux/reducers/Posts.type';
-import { toggleAddModal, toggleEditModal, updatePostsEditPostId, updatePostsNewPost } from '../../redux/reducers/ui.reducer';
+import * as Styled from './Home.styles';
 
 const Home = () => {
   const dispatch = useAppDispatch();
@@ -52,20 +56,16 @@ const Home = () => {
   const handleDeletePost = (id: number) => {
     deletePostMutationById(id)
     .unwrap()
-    .then((res) => {
+    .then(() => {
       dispatch(deletePost(id))})
   };
-  
+
   return (
     <>
       {(addModalToggle || editModalToggle) && (
         <Modal 
         />
       )}
-      {/* {editModalToggle && (
-        <Modal 
-        />
-      )} */}
       {postsData.length && (
         <>
           <Styled.Header>
@@ -83,9 +83,6 @@ const Home = () => {
                     onChange={handleSearchIdChange}
                     >
                   </Styled.Input>
-                  <Styled.SearchButton
-                    type="submit"><i className="fa fa-search"></i>
-                  </Styled.SearchButton>
                 </form>
               </Styled.SearchFormContainer>
             </Styled.SearchBarContainer>
@@ -101,7 +98,7 @@ const Home = () => {
               </Styled.TableRow>
             </Styled.TableHead>
             <Styled.TableBody>
-              {postsData.map((post) => {
+              {postsData && postsData.map((post) => {
                 return (
                   <Styled.TableRow key={post.id}>
                     <Styled.TableDetail>{post.id}</Styled.TableDetail>
