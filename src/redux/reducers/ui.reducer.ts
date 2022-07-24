@@ -2,7 +2,7 @@ import {createSlice, PayloadAction} from "@reduxjs/toolkit"
 
 export interface UiState {
   posts: {
-    searchId: number | undefined,
+    searchId: number,
     newPost: {
       title: string,
       body: string,
@@ -13,6 +13,11 @@ export interface UiState {
     },
     addModalToggle: boolean,
     editModalToggle: boolean,
+    skip: boolean,
+  },
+  postalLookup :{
+    searchCode: number,
+    skip: boolean,
   },
   country:{
     selectedCountry: string,
@@ -24,7 +29,7 @@ const initialState = (): UiState => {
   if (localUiState) {
     const state = (JSON.parse(localUiState) as UiState)
     state.posts = {
-      searchId: undefined,
+      searchId: 0,
       newPost: {
         title: '',
         body: '',
@@ -35,6 +40,11 @@ const initialState = (): UiState => {
       },
       addModalToggle: false,
       editModalToggle: false,
+      skip: true,
+    }
+    state.postalLookup = {
+      searchCode: 0,
+      skip: true,
     }
     state.country = {
       selectedCountry: 'Canada',
@@ -43,7 +53,7 @@ const initialState = (): UiState => {
   } else {
     return {
       posts: {
-        searchId: undefined,
+        searchId: 0,
         newPost: {
           title: '',
           body: '',
@@ -54,6 +64,11 @@ const initialState = (): UiState => {
         },
         addModalToggle: false,
         editModalToggle: false,
+        skip: true,
+      },
+      postalLookup: {
+        searchCode: 0,
+        skip: true,
       },
       country: {
         selectedCountry: 'Canada',
@@ -84,6 +99,15 @@ export const uiSlice = createSlice({
     updateSelectedCountry: (state, action: PayloadAction<string>) => {
       state.country.selectedCountry = action.payload
     },
+    updatePostalSearchCode: (state, action: PayloadAction<number>) => {
+      state.postalLookup.searchCode = action.payload
+    },
+    updatePostsSkip: (state, action: PayloadAction<boolean>) => {
+      state.posts.skip = !!action.payload
+    },
+    updatePostalLookupSkip: (state, action: PayloadAction<boolean>) => {
+      state.postalLookup.skip = !!action.payload
+    }
   },
 })
 
@@ -93,7 +117,10 @@ export const {
   updatePostsEditPostId,
   toggleAddModal,
   toggleEditModal,
-  updateSelectedCountry
+  updateSelectedCountry,
+  updatePostalSearchCode,
+  updatePostsSkip,
+  updatePostalLookupSkip,
 } = uiSlice.actions
 
 export const uiReducer = uiSlice.reducer

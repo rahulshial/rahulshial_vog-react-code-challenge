@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react'
+import React, { useEffect } from 'react'
 import { useAppDispatch, useAppSelector } from '../../redux/hooks';
 import { 
   useGetAllPostsQuery, 
@@ -12,30 +12,33 @@ import {
   toggleAddModal,
   toggleEditModal,
   updatePostsEditPostId,
-  updatePostsNewPost } from '../../redux/reducers/ui.reducer';
+  updatePostsNewPost, 
+  updatePostsSearchId,
+  updatePostsSkip} from '../../redux/reducers/ui.reducer';
 import Modal from './components/Modal';
 import { PostEntity } from '../../redux/reducers/posts/Posts.type';
 import * as Styled from './Home.styles';
 
 const Home = () => {
   const dispatch = useAppDispatch();
-  const [searchId, setSearchId] = useState(0);
-  const postsData = useAppSelector(state => state.posts);
-  const {data} = useGetAllPostsQuery();
-  const {data: postData} = useGetPostByIdQuery(searchId);
-  const [deletePostMutationById] = useDeletePostByIdMutation();
+  const postsData = useAppSelector<any>(state => state.posts);
   const addModalToggle = useAppSelector(state => state.ui.posts.addModalToggle)
   const editModalToggle = useAppSelector(state => state.ui.posts.editModalToggle)
+  const searchId = useAppSelector(state => state.ui.posts.searchId)
+  const skip = useAppSelector(state => state.ui.posts.skip)
+  const {data} = useGetAllPostsQuery();
+  const [deletePostMutationById] = useDeletePostByIdMutation();
+  const {data: postData} = useGetPostByIdQuery(searchId, { skip });
 
   useEffect(() => {
-    if(data){
+    if(data && !searchId){
       dispatch(setPostList(data))
     }
-  }, [data, dispatch]);
+  }, [data, dispatch, searchId]);
 
   useEffect(() => {
-    if(postData && searchId > 0) {
-      dispatch(setPostListById([postData]));
+    if (postData && searchId) {
+        dispatch(setPostListById([postData]));
     }
   }, [dispatch, postData, searchId])
   
@@ -50,7 +53,13 @@ const Home = () => {
   }
   
   const handleSearchIdChange = (event: any) => {
-    setSearchId(event.target.value);
+    if(event.target.value === "") {
+      dispatch(updatePostsSkip(true))
+      dispatch(updatePostsSearchId(0))
+    } else {
+      dispatch(updatePostsSkip(false))
+      dispatch(updatePostsSearchId(event.target.value))
+    }
   };
 
   const handleDeletePost = (id: number) => {
@@ -59,7 +68,6 @@ const Home = () => {
     .then(() => {
       dispatch(deletePost(id))})
   };
-
 
   return (
     <>
@@ -80,7 +88,7 @@ const Home = () => {
                     type="number"
                     placeholder="Search.."
                     name="searchId"
-                    value={searchId}
+                    value={searchId === 0 ? '' : searchId}
                     onChange={handleSearchIdChange}
                     >
                   </Styled.Input>
@@ -99,7 +107,7 @@ const Home = () => {
               </Styled.TableRow>
             </Styled.TableHead>
             <Styled.TableBody>
-              {postsData.map((post) => {
+              {postsData.map((post: any) => {
                 return (
                   <Styled.TableRow key={post.id}>
                     <Styled.TableDetail>{post.id}</Styled.TableDetail>

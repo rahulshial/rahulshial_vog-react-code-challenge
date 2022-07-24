@@ -1,24 +1,32 @@
+/* eslint-disable @typescript-eslint/no-unused-vars */
 import React, { useEffect, useState } from 'react';
 import { useGetAreaDetailsByPostalCodeQuery } from '../../redux/api/postalLookup.api';
 import { useAppDispatch, useAppSelector } from '../../redux/hooks';
 import { setAreaDetailsByPostalCode } from '../../redux/reducers/postalLookup/postalLookup.reducer';
+import { updatePostalLookupSkip, updatePostalSearchCode } from '../../redux/reducers/ui.reducer';
 import * as Styled from './PostalLookup.styles';
 
 const PostalLookup = () => {
   const dispatch = useAppDispatch();
-  const [searchCode, setSearchCode] = useState(0)
-
-  const areaDetails = useAppSelector(state => state.postalLookup);
-  const { data } = useGetAreaDetailsByPostalCodeQuery(searchCode);
-
+  const areaDetails = useAppSelector<any>(state => state.postalLookup);
+  const searchCode = useAppSelector(state => state.ui.postalLookup.searchCode)
+  const skip = useAppSelector(state => state.ui.postalLookup.skip);
+  const { data } = useGetAreaDetailsByPostalCodeQuery(searchCode, { skip });
+  
   useEffect(() => {
     if(data && searchCode) {
       dispatch(setAreaDetailsByPostalCode(data))
     }
   }, [data, dispatch, searchCode])
-
+  
   const handleSearchCodeChange = (event: any) => {
-    setSearchCode(event.target.value);
+    if(event.target.value === "") {
+      dispatch(updatePostalLookupSkip(true))
+      dispatch(updatePostalSearchCode(0))
+    } else {
+      dispatch(updatePostalLookupSkip(false))
+      dispatch(updatePostalSearchCode(event.target.value))
+    }
   };
 
   return (
@@ -32,7 +40,7 @@ const PostalLookup = () => {
                 type="text"
                 placeholder="Search.."
                 name="searchCode"
-                value={searchCode}
+                value={searchCode === 0 ? '' : searchCode}
                 onChange={handleSearchCodeChange}
               >
               </Styled.Input>
@@ -40,7 +48,7 @@ const PostalLookup = () => {
           </Styled.SearchFormContainer>
         </Styled.SearchBarContainer>
       </Styled.Header>
-      {areaDetails['post code'] && 
+      {!skip && areaDetails['post code'] && 
         (
         <>
           <Styled.DataContainer>
