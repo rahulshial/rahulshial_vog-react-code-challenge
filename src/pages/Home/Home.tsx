@@ -13,7 +13,8 @@ import {
   toggleEditModal,
   updatePostsEditPostId,
   updatePostsNewPost, 
-  updatePostsSearchId} from '../../redux/reducers/ui.reducer';
+  updatePostsSearchId,
+  updatePostsSkip} from '../../redux/reducers/ui.reducer';
 import Modal from './Modal';
 import { PostEntity } from '../../redux/reducers/Posts.type';
 import * as Styled from './Home.styles';
@@ -26,7 +27,8 @@ const Home = () => {
   const addModalToggle = useAppSelector(state => state.ui.posts.addModalToggle)
   const editModalToggle = useAppSelector(state => state.ui.posts.editModalToggle)
   const searchId = useAppSelector(state => state.ui.posts.searchId)
-  const {data: postData} = useGetPostByIdQuery(searchId);
+  const skip = useAppSelector(state => state.ui.posts.skip)
+  const {data: postData} = useGetPostByIdQuery(searchId, { skip });
 
   useEffect(() => {
     if(data && !searchId){
@@ -52,8 +54,10 @@ const Home = () => {
   
   const handleSearchIdChange = (event: any) => {
     if(event.target.value === "") {
-      dispatch(updatePostsSearchId(undefined))
+      dispatch(updatePostsSkip(true))
+      dispatch(updatePostsSearchId(0))
     } else {
+      dispatch(updatePostsSkip(false))
       dispatch(updatePostsSearchId(event.target.value))
     }
   };
@@ -84,7 +88,7 @@ const Home = () => {
                     type="number"
                     placeholder="Search.."
                     name="searchId"
-                    value={searchId}
+                    value={searchId === 0 ? '' : searchId}
                     onChange={handleSearchIdChange}
                     >
                   </Styled.Input>

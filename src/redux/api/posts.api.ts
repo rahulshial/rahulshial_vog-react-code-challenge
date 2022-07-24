@@ -12,7 +12,7 @@ export const postsApi = createApi({
     getAllPosts: builder.query<PostEntity[], void>({
       query: () => ''
     }),
-    getPostById: builder.query<PostEntity, number | undefined>({
+    getPostById: builder.query<PostEntity, number>({
       query: (id) => `/${id}`
     }),
     createPost: builder.mutation<PostEntity, {}>({
