@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react'
+import React, { useEffect } from 'react'
 import { useAppDispatch, useAppSelector } from '../../redux/hooks';
 import { 
   useGetAllPostsQuery, 
@@ -12,32 +12,33 @@ import {
   toggleAddModal,
   toggleEditModal,
   updatePostsEditPostId,
-  updatePostsNewPost } from '../../redux/reducers/ui.reducer';
+  updatePostsNewPost, 
+  updatePostsSearchId} from '../../redux/reducers/ui.reducer';
 import Modal from './Modal';
 import { PostEntity } from '../../redux/reducers/Posts.type';
 import * as Styled from './Home.styles';
 
 const Home = () => {
   const dispatch = useAppDispatch();
-  const [searchId, setSearchId] = useState(0);
   const postsData = useAppSelector(state => state.posts);
   const {data} = useGetAllPostsQuery();
-  const {data: postData} = useGetPostByIdQuery(searchId);
   const [deletePostMutationById] = useDeletePostByIdMutation();
   const addModalToggle = useAppSelector(state => state.ui.posts.addModalToggle)
   const editModalToggle = useAppSelector(state => state.ui.posts.editModalToggle)
+  const searchIdRedux = useAppSelector(state => state.ui.posts.searchId)
+  const {data: postData} = useGetPostByIdQuery(searchIdRedux);
 
   useEffect(() => {
-    if(data){
+    if(data && !searchIdRedux){
       dispatch(setPostList(data))
     }
-  }, [data, dispatch]);
+  }, [data, dispatch, searchIdRedux]);
 
   useEffect(() => {
-    if(postData && searchId > 0) {
-      dispatch(setPostListById([postData]));
+    if (postData && searchIdRedux) {
+        dispatch(setPostListById([postData]));
     }
-  }, [dispatch, postData, searchId])
+  }, [dispatch, postData, searchIdRedux])
   
   const handleToggleAddModal = () => {
     dispatch(toggleAddModal(!addModalToggle))
@@ -50,7 +51,11 @@ const Home = () => {
   }
   
   const handleSearchIdChange = (event: any) => {
-    setSearchId(event.target.value);
+    if(event.target.value === "") {
+      dispatch(updatePostsSearchId(undefined))
+    } else {
+      dispatch(updatePostsSearchId(event.target.value))
+    }
   };
 
   const handleDeletePost = (id: number) => {
@@ -80,7 +85,7 @@ const Home = () => {
                     type="number"
                     placeholder="Search.."
                     name="searchId"
-                    value={searchId}
+                    value={searchIdRedux}
                     onChange={handleSearchIdChange}
                     >
                   </Styled.Input>

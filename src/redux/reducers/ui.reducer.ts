@@ -51,14 +51,13 @@ const initialState = (): UiState => {
       },
     }
   }
-}
-
+};
 
 export const uiSlice = createSlice({
   name: 'ui',
   initialState: initialState(),
   reducers: {
-    updatePostsSearchId: (state, action: PayloadAction<number>) => {
+    updatePostsSearchId: (state, action: PayloadAction<number | undefined>) => {
       state.posts.searchId = action.payload
     },
     updatePostsNewPost: (state, action: PayloadAction<{}>) => {
