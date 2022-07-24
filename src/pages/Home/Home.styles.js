@@ -7,7 +7,7 @@ export const Header = styled.div`
 `;
 
 export const AddPostButtonContainer = styled.div`
-flex: 1;
+  flex: 1;
 `;
 
 export const AddPostButton = styled.button`
@@ -26,14 +26,12 @@ export const AddPostButton = styled.button`
 
 export const SearchBarContainer = styled.div`
   float: right;
+  margin-bottom: 10px;
 `;
 
 export const SearchFormContainer = styled.div`
   float: right;
-  float: right;
   padding: 6px 10px;
-  margin-top: 8px;
-  margin-right: 16px;
   background: #ddd;
   font-size: 14px;
   border: none;
@@ -43,21 +41,9 @@ export const SearchFormContainer = styled.div`
 
 export const Input = styled.input`
   padding: 6px;
-  margin-top: 8px;
+  margin: 6px 0;
   font-size: 16px;
   border: none;
-`;
-
-export const SearchButton = styled.button`
-  float: right;
-  padding: 6px 10px;
-  margin-top: 8px;
-  margin-right: 16px;
-  background: #ddd;
-  font-size: 17px;
-  border: none;
-  cursor: pointer;
-  &:hover {background-color: #ccc;}
 `;
 
 export const Table = styled.table`
@@ -94,6 +80,7 @@ export const TableDetail = styled.td`
   padding: 8px;
   color: black;
   font-size: 14px;
+  text-align: justify;
 `;
 
 export const EditButton = styled.button`
