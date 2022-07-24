@@ -10,11 +10,11 @@ export const countryListSlice = createSlice({
   initialState,
   reducers: {
     setCountrylist: (state, action: PayloadAction<CountryListState>) => {
-      state = {...action.payload}
+      state = [...state, ...action.payload]
       return state
     },
-    setCountry: (state, action: PayloadAction<CountryListState>) => {
-      state = [...action.payload]
+    setCountry: (state, action: PayloadAction<CountryListEntity>) => {
+      state = [action.payload]
       return state
     },
   },

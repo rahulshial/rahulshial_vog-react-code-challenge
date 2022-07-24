@@ -4,13 +4,14 @@ import { useGetAllCountriesQuery } from '../../../../redux/api/countryList.api';
 import { countryList } from '../../data';
 import { useAppDispatch, useAppSelector } from '../../../../redux/hooks';
 import * as Styled from './DropDown.styles';
-import { setCountrylist } from '../../../../redux/reducers/countryList/countryList.reducer';
+import { setCountry, setCountrylist } from '../../../../redux/reducers/countryList/countryList.reducer';
 
-
-const DropDown = () => {
+interface Props {
+  setSelectedCountry: React.Dispatch<React.SetStateAction<string>>
+}
+const DropDown = ({setSelectedCountry}: Props) => {
   const dispatch = useAppDispatch();
   const [open, setOpen] = useState(false);
-  const [localCountryList, setLocalCountryList] = useState([]);
   const [selection, setSelection] = useState('Canada');
   const toggle = () => setOpen(!open);
   const countryListData = useAppSelector(state => state.countryList);
@@ -22,10 +23,9 @@ const DropDown = () => {
     }
   }, [data, dispatch])
   
-
-  
-  const handleOnClick = (countryName: string) => {
-    setSelection(countryName);
+  const handleOnClick = (country: any) => {
+    setSelectedCountry(country);
+    // dispatch(setCountry(country))
     setOpen(false)
   }
 
@@ -36,9 +36,9 @@ const DropDown = () => {
         onClick={() => toggle()}>Search Country</Styled.SearchCountryButton>
         {open && (<ul className="dd-list">
           <Styled.Div>
-          {countryList.map(country => {
+          {countryListData && countryListData.map(country => {
             return (
-              <Styled.Country  onClick={() => handleOnClick(country.name.common)}>{country.name.common}
+              <Styled.Country key={country.name.common} onClick={() => handleOnClick(country)}>{country.name.common}
               </Styled.Country>
             )
           })}
