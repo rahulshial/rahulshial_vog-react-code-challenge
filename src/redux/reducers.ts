@@ -8,6 +8,7 @@ import { uiReducer as ui } from "./reducers/ui.reducer";
 export const rootReducer = combineReducers({
   posts,
   ui,
+  postalLookup,
   [postsApi.reducerPath]: postsApi.reducer,
   [postalLookupApi.reducerPath]: postalLookupApi.reducer,
 });
