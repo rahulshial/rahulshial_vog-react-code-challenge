@@ -7,11 +7,11 @@ import { countryListReducer as countryList } from "./reducers/countryList/countr
 import { countryListApi } from "./api/countryList.api";
 import { UniversitiesReducer as universities } from "./reducers/universities/universities.reducer";
 import { universitiesApi } from "./api/universities.api";
-
-
+import { uiReducer as ui } from "./reducers/ui.reducer";
 
 export const rootReducer = combineReducers({
   posts,
+  ui,
   postalLookup,
   countryList,
   universities,
