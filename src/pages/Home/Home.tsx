@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-unused-vars */
 import React, { useEffect, useState } from 'react'
 import { useAppDispatch, useAppSelector } from '../../redux/hooks';
 import { 
@@ -10,20 +11,22 @@ import {
     setPostList,
     deletePost,
     updatePost,
-    createPost, setPostListById } from '../../redux/reducers/posts.reducer';
+    createPost, 
+    setPostListById } from '../../redux/reducers/posts.reducer';
 import Modal from './Modal';
 import * as Styled from './Home.styles';
 import { PostEntity } from '../../redux/reducers/Posts.type';
+import { toggleAddModal, toggleEditModal, updatePostsNewPost } from '../../redux/reducers/ui.reducer';
 
 const Home = () => {
   const dispatch = useAppDispatch();
   const [searchId, setSearchId] = useState(0);
   const [openAddModal, setOpenAddModal] = useState(false);
   const [openEditModal, setOpenEditModal] = useState(false);
-  const [newPost, setNewPost] = useState({
-    title: '',
-    body: '',
-  })
+  // const [newPost, setNewPost] = useState({
+  //   title: '',
+  //   body: '',
+  // })
   const [localPostId, setLocalPostId] = useState({
     id: 0,
     userId: 0,
@@ -34,6 +37,9 @@ const Home = () => {
   const [createPostMutation] = useCreatePostMutation();
   const [deletePostMutationById] = useDeletePostByIdMutation();
   const [updatePostMutationById] = useUpdatePostByIdMutation();
+  const addModalToggle = useAppSelector(state => state.ui.posts.addModalToggle)
+  const editModalToggle = useAppSelector(state => state.ui.posts.editModalToggle)
+  const newPost = useAppSelector(state => state.ui.posts.newPost)
 
   useEffect(() => {
     if(data){
@@ -49,12 +55,14 @@ const Home = () => {
   
   const handleToggleAddModal = () => {
     setOpenAddModal(!openAddModal);
+    dispatch(toggleAddModal(!addModalToggle))
   }
 
   const handleToggleEditModal = (post: PostEntity) => {
-    setNewPost({title: post.title, body: post.body})
+    // setNewPost({title: post.title, body: post.body})
     setLocalPostId({id: post.id, userId: post.userId})
-    setOpenEditModal(!openEditModal);    
+    setOpenEditModal(!openEditModal);
+    dispatch(toggleEditModal(!editModalToggle))  
   }
   
 
@@ -69,10 +77,10 @@ const Home = () => {
       body: newPost.body,
       userId: 123,
     }
-    setNewPost({
-      title: '',
-      body: '',
-    });
+    // setNewPost({
+    //   title: '',
+    //   body: '',
+    // });
     createPostMutation(postBody)
     .unwrap()
     .then((res: any) => {
@@ -81,11 +89,10 @@ const Home = () => {
   };
 
   const handleCancelPost = () => {
-    setOpenAddModal(false);
-    setNewPost({
-      title: '',
-      body: '',
-    });
+    dispatch(toggleAddModal(!addModalToggle))
+    dispatch(updatePostsNewPost({
+      title: undefined,
+      body: undefined,}))
   };
 
   const handleDeletePost = (id: number) => {
@@ -112,19 +119,13 @@ const Home = () => {
 
   return (
     <>
-      {openAddModal && (
+      {addModalToggle && (
         <Modal 
-        post={newPost}
-        handleCancelPost={handleCancelPost}
-        setPost={setNewPost}
         savePost={handleCreatePost}
         />
       )}
-      {openEditModal && (
+      {editModalToggle && (
         <Modal 
-        post={newPost}
-        handleCancelPost={handleCancelPost}
-        setPost={setNewPost}
         savePost={handleUpdatePost}
         />
       )}

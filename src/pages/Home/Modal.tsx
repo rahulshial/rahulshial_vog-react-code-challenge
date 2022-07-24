@@ -1,19 +1,39 @@
-import React from 'react'
+import React, { useState } from 'react';
+import { useAppDispatch, useAppSelector } from '../../redux/hooks';
+import { toggleAddModal, toggleEditModal, updatePostsNewPost } from '../../redux/reducers/ui.reducer';
 
 import * as Styled from './Home.styles';
 interface Props {
-post: {title: string, body: string},
-setPost: React.Dispatch<React.SetStateAction<any>>,
-handleCancelPost: () => void,
-savePost: () => void,
+  savePost: () => void,
 }
 
-const Modal = ({post, setPost, handleCancelPost, savePost}: Props) => {
+const Modal = ({ savePost}: Props) => {
+  const dispatch = useAppDispatch();
+  const addModalToggle = useAppSelector(state => state.ui.posts.addModalToggle);
+  const editModalToggle = useAppSelector(state => state.ui.posts.editModalToggle);
+  const [post, setPost] = useState({
+    title: '',
+    body: '',
+  })
 
   const handleTextChange = (key: string, value: string) => {
     setPost((prev: any) => ({...prev, [key]: value}));
+    dispatch(updatePostsNewPost(post))
+    dispatch(updatePostsNewPost(post))
   }
 
+  const handleCancelPostModal = () => {
+    if(addModalToggle) {
+      dispatch(toggleAddModal(!addModalToggle))
+    }
+    if(editModalToggle) {
+      dispatch(toggleEditModal(!editModalToggle))
+    }
+    dispatch(updatePostsNewPost({
+      title: '',
+      body: '',}))
+  }
+  
   return (
     <Styled.Modal>
     <Styled.RowContainer>
@@ -55,7 +75,7 @@ const Modal = ({post, setPost, handleCancelPost, savePost}: Props) => {
       </Styled.SavePostButtonContainer>
       <Styled.CancelButtonContainer>
         <Styled.CancelPostButton
-          onClick={handleCancelPost}>
+          onClick={handleCancelPostModal}>
           Cancel
         </Styled.CancelPostButton>
       </Styled.CancelButtonContainer>
