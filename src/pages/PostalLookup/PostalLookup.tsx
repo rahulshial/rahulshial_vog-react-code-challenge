@@ -9,6 +9,7 @@ const PostalLookup = () => {
   const [searchCode, setSearchCode] = useState(0)
 
   const areaDetails = useAppSelector(state => state.postalLookup);
+  const searchCode
   const { data } = useGetAreaDetailsByPostalCodeQuery(searchCode);
 
   useEffect(() => {
