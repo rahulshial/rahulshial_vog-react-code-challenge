@@ -86,7 +86,7 @@ const Home = () => {
                 <form>
                   <Styled.Input
                     type="number"
-                    placeholder="Search.."
+                    placeholder="Search Id.."
                     name="searchId"
                     value={searchId === 0 ? '' : searchId}
                     onChange={handleSearchIdChange}
