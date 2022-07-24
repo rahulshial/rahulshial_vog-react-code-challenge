@@ -22,12 +22,12 @@ import * as Styled from './Home.styles';
 const Home = () => {
   const dispatch = useAppDispatch();
   const postsData = useAppSelector(state => state.posts);
-  const {data} = useGetAllPostsQuery();
-  const [deletePostMutationById] = useDeletePostByIdMutation();
   const addModalToggle = useAppSelector(state => state.ui.posts.addModalToggle)
   const editModalToggle = useAppSelector(state => state.ui.posts.editModalToggle)
   const searchId = useAppSelector(state => state.ui.posts.searchId)
   const skip = useAppSelector(state => state.ui.posts.skip)
+  const {data} = useGetAllPostsQuery();
+  const [deletePostMutationById] = useDeletePostByIdMutation();
   const {data: postData} = useGetPostByIdQuery(searchId, { skip });
 
   useEffect(() => {
