@@ -33,7 +33,7 @@ export const postsSlice = createSlice({
       state = [...updatedState]
       return state
     },
-    deletePost: (state, {payload: id}: PayloadAction<number | null>) => {
+    deletePost: (state, {payload: id}: PayloadAction<number>) => {
       const updatedState = state.filter((post) => post.id !== id)
       state = [...updatedState]
       return state
