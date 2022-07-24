@@ -21,7 +21,7 @@ import * as Styled from './Home.styles';
 
 const Home = () => {
   const dispatch = useAppDispatch();
-  const postsData = useAppSelector(state => state.posts);
+  const postsData = useAppSelector<any>(state => state.posts);
   const addModalToggle = useAppSelector(state => state.ui.posts.addModalToggle)
   const editModalToggle = useAppSelector(state => state.ui.posts.editModalToggle)
   const searchId = useAppSelector(state => state.ui.posts.searchId)
@@ -107,7 +107,7 @@ const Home = () => {
               </Styled.TableRow>
             </Styled.TableHead>
             <Styled.TableBody>
-              {postsData.map((post) => {
+              {postsData.map((post: any) => {
                 return (
                   <Styled.TableRow key={post.id}>
                     <Styled.TableDetail>{post.id}</Styled.TableDetail>
