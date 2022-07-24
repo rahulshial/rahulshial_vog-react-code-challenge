@@ -10,7 +10,7 @@ export const postsSlice = createSlice({
   initialState,
   reducers: {
     setPostList: (state, action: PayloadAction<PostsState>) => {
-      state = [...state, ...action.payload]
+      state = action.payload
       return state
     },
     setPostListById: (state, action: PayloadAction<PostsState>) => {
@@ -22,7 +22,6 @@ export const postsSlice = createSlice({
       return state
     },
     updatePost: (state, action: PayloadAction<PostEntity>) => {
-      state = [...state, action.payload]
       const updatedState = state.map((post) => {
         if(post.id === action.payload.id) {
           return action.payload
