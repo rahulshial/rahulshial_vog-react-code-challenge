@@ -73,9 +73,8 @@ const Modal = () => {
         <form>
           <Styled.PostInput
             type='text'
-            placeHolder='title'
+            placeholder='title'
             value={localPost.title}
-            //@ts-ignore
             onChange={({target: {value: title}}) => handleTextChange("title", title)}
             >
           </Styled.PostInput>
@@ -88,9 +87,8 @@ const Modal = () => {
         <form>
           <Styled.PostInput
             type='text'
-            placeHolder='post'
+            placeholder='post'
             value={localPost.body}
-            //@ts-ignore
             onChange={({target: {value: body}}) => handleTextChange("body", body)}
             >
           </Styled.PostInput>

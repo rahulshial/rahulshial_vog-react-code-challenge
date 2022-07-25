@@ -10,7 +10,7 @@ export const postsSlice = createSlice({
   initialState,
   reducers: {
     setPostList: (state, action: PayloadAction<PostsState>) => {
-      state = [...state, ...action.payload]
+      state = action.payload
       return state
     },
     setPostListById: (state, action: PayloadAction<PostsState>) => {

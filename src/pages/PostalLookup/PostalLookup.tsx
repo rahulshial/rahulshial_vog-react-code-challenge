@@ -1,5 +1,4 @@
-/* eslint-disable @typescript-eslint/no-unused-vars */
-import React, { useEffect, useState } from 'react';
+import React, { useEffect } from 'react';
 import { useGetAreaDetailsByPostalCodeQuery } from '../../redux/api/postalLookup.api';
 import { useAppDispatch, useAppSelector } from '../../redux/hooks';
 import { setAreaDetailsByPostalCode } from '../../redux/reducers/postalLookup/postalLookup.reducer';

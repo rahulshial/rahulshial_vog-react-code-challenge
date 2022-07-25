@@ -1,4 +1,3 @@
-/* eslint-disable @typescript-eslint/no-unused-vars */
 import React from 'react';
 import { Route, Routes } from "react-router-dom"
 import Navbar from './components/Navbar';
